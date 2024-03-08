@@ -395,19 +395,19 @@ int diagonal_double(int background[][3], char game_screen[][3]){
         return 1;
     }                
     
-    if (background[0][2] == -1 && background[1][1] == -1 && background[2][0] == 0)
+    if (background[0][2] == 1 && background[1][1] == 1 && background[2][0] == 0)
     {
         background[2][0] = -1;
-        game_screen[2][0] = 'X'; 
+        game_screen[2][0] = 'X';    
         return 1;
     }
-    else if (background[0][2] == -1 && background[2][0] == -1 && background[1][1] == 0)
+    else if (background[0][2] == 1 && background[2][0] == 1 && background[1][1] == 0)
     {
         background[1][1] = -1;
         game_screen[1][1] = 'X'; 
         return 1;
     }        
-    else if (background[1][1] == -1 && background[2][0] == -1 && background[0][2] == 0)
+    else if (background[1][1] == 1 && background[2][0] == 1 && background[0][2] == 0)
     {
         background[0][0] = -1;
         game_screen[0][0] = 'X'; 
