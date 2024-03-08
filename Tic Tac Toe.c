@@ -5,7 +5,6 @@
 void human(int[][3], char[][3]);
 void computer_easy(int[][3], char[][3]);
 void computer_hard(int[][3], char[][3]);
-void computer_impossible(int[][3], char[][3]);
 void print_screen(int[][3], char[][3]);
 int check_result(int[][3], int, int);
 int row_cross(int[][3]);
@@ -31,7 +30,7 @@ int main(){
 
     if (game_mode == 2)
     {
-        printf("Press 1 for easy mode \nPress 2 for hard mode\nPress 3 for impossible mode\nYour Choice: ");
+        printf("Press 1 for easy mode \nPress 2 for hard mode\nYour Choice: ");
         scanf("%d", &difficulty);
     }
 
@@ -43,7 +42,7 @@ int main(){
     {
         computer_easy(background,game_screen);
     }
-    else
+    else if (difficulty == 2)
     {
         computer_hard(background,game_screen);
     }
