@@ -3,12 +3,14 @@
 #include <stdlib.h>
 
 void human(int[][3], char[][3]);
+void computer_easy(int[][3], char[][3]);
 void print_screen(int[][3], char[][3]);
-int check_result(int[][3], int);
+int check_result(int[][3], int, int);
 int row_cross(int[][3]);
 int column_cross(int[][3]);
 int diagonal_cross(int[][3]);
 void move(int[][3], char[][3], int);
+void com_easy_move(int[][3], char[][3]);
 
 int main(){
 
@@ -23,7 +25,7 @@ int main(){
     if (game_mode == 2)
     {
         printf("Press 1 for easy mode \nPress 2 hard mode\nYour Choice: ");
-        scanf("%d", &game_mode);
+        scanf("%d", &difficulty);
     }
 
     if (game_mode == 1)
@@ -32,7 +34,7 @@ int main(){
     }
     else if (difficulty == 1)
     {
-
+        computer_easy(background,game_screen);
     }
     else
     {
@@ -44,13 +46,34 @@ void human(int background[][3], char game_screen[][3]){
 
     static int turn = 2;
     print_screen(background, game_screen);
-    if (check_result(background,turn) == 1)
+    if (check_result(background,turn,0) == 1)
     {
         return;
     }
     move(background, game_screen, turn);
     turn++;
     human(background, game_screen);
+}
+
+void computer_easy(int background[][3], char game_screen[][3]){
+
+    static int turn = 2;
+    print_screen(background, game_screen);
+    if (check_result(background, turn, turn%2 == 0? 0 : 1) == 1)
+    {
+        return;
+    }
+    if (turn%2 == 0)
+    {
+        move(background, game_screen, turn);
+    }
+    else if (turn%2 == 1)
+    {
+        com_easy_move(background, game_screen);
+    }
+    turn++;
+    computer_easy(background, game_screen);
+
 }
 
 void print_screen(int background[][3], char game_screen[][3]){
@@ -64,7 +87,7 @@ void print_screen(int background[][3], char game_screen[][3]){
     return;    
 }
 
-int check_result(int background[][3], int turn){
+int check_result(int background[][3], int turn, int player){
 
     if (turn == 11)
     {
@@ -73,17 +96,38 @@ int check_result(int background[][3], int turn){
     }
     else if (row_cross(background) == 1)
     {
-        printf("PLAYER %d WON!!", (turn-1)%2+1);
+        if(player == 1)
+        {
+            printf("PLAYER %d WON!!", (turn-1)%2+1);
+        }
+        else if (player == 0)
+        {
+            printf("THE COMPUTER WON!!");
+        }        
         return 1;
     }
     else if (column_cross(background) == 1)
     {
-        printf("PLAYER %d WON!!", (turn-1)%2+1);
+        if(player == 1)
+        {
+            printf("PLAYER %d WON!!", (turn-1)%2+1);
+        }
+        else if (player == 0)
+        {
+            printf("THE COMPUTER WON!!");
+        }        
         return 1;
     }
     else if(diagonal_cross(background) == 1)
     {
-        printf("PLAYER %d WON!!", (turn-1)%2+1);
+        if(player == 1)
+        {
+            printf("PLAYER %d WON!!", (turn-1)%2+1);
+        }
+        else if (player == 0)
+        {
+            printf("THE COMPUTER WON!!");
+        }        
         return 1;
     }    
     else
@@ -156,3 +200,20 @@ void move(int background[][3], char game_screen[][3], int turn){
         printf("That spot is taken!\n");
     } while (1);
 }
+
+void com_easy_move(int background[][3], char game_screen[][3]){
+   
+    int  row=0, column=0;
+    do
+    {
+        row = rand() % 3;
+        column = rand() % 3;
+        if (background[row][column] == 0)
+        {
+            background[row][column] = -1;
+            game_screen[row][column] = 'X';
+            return;
+        }
+    } while (1);
+}
+
