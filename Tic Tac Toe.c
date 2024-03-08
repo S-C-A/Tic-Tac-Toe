@@ -2,388 +2,157 @@
 #include <time.h>
 #include <stdlib.h>
 
+void human(int[][3], char[][3]);
+void print_screen(int[][3], char[][3]);
+int check_result(int[][3], int);
+int row_cross(int[][3]);
+int column_cross(int[][3]);
+int diagonal_cross(int[][3]);
+void move(int[][3], char[][3], int);
 
 int main(){
-    
 
     srand(time(NULL));
-    int low = 1, top = 3, move;
-    int back[3][3] = {0}, sat, sut, p=2, g, z;
-    char front[3][3] = {{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}};
+    int background[3][3] = {0};
+    char game_screen[3][3] = {{' ',' ',' '},{' ',' ',' '},{' ',' ',' '}};
+    int game_mode, difficulty;
 
-    printf("Bir insana karsi mi yoksa bilgisayara karsi mi oynamak istersin?\nbilgisayar icin 1, insan icin 2'yi tusla: ");
-    scanf("%d", &g);
+    printf("Press 1 to play against a human\nPress 2 to play against the computer\nYour Choice: ");
+    scanf("%d", &game_mode);
 
-    if (g==1)
+    if (game_mode == 2)
     {
-         printf("Kolay mod icin 1i, zor mod icin 2'yi tusla: ");
-        scanf("%d", &z);
+        printf("Press 1 for easy mode \nPress 2 hard mode\nYour Choice: ");
+        scanf("%d", &game_mode);
     }
-    
 
-    if(g == 2)
+    if (game_mode == 1)
     {
-        while (1)
-        {
-            if (p == 11)
-            {
-                printf("\n\n\nOyun berabere bitti :(\n");
-                break;
-            }
-            
-            
-            
-            for (int i = 0; i < 3; i++)
-            {
-                printf("| ");
-                for (int j = 0; j < 3; j++)
-                {
-                    printf(" %c  | ", front[i][j]);
-                }
-                printf("\n-------------------\n");
-            }
-            printf("%d'inci oyuncunun hamle sirasi!", p%2+1);
-            scanf("%d", &sat);
-            scanf("%d", &sut);
-    
-            if (p%2+1 == 1)
-            {
-                if(back[sat-1][sut-1] == 0)
-                {
-                front[sat-1][sut-1] = 'O';
-                back[sat-1][sut-1] = 2;
-                p++;
-                }
-            }
-            else if (p%2+1 == 2)
-            {
-                if(back[sat-1][sut-1] == 0)
-                {
-                front[sat-1][sut-1] = 'X';
-                back[sat-1][sut-1] = -2;
-                p++;
-                }
-            }
-
-            if (back[0][0] + back[0][1] + back[0][2] == 6 ||
-                back[1][0] + back[1][1] + back[1][2] == 6 ||
-                back[2][0] + back[2][1] + back[2][2] == 6 ||
-                back[0][0] + back[1][0] + back[2][0] == 6 ||
-                back[0][1] + back[1][1] + back[2][1] == 6 ||
-                back[0][2] + back[1][2] + back[2][2] == 6 ||
-                back[0][0] + back[1][1] + back[2][2] == 6 ||
-                back[0][2] + back[1][1] + back[2][0] == 6)
-            {
-                printf("%d'inci oyuncu kazandi!\n",(p-1)%2 +1);
-                break;
-            }
-            else if (back[0][0] + back[0][1] + back[0][2] == -6 ||
-                    back[1][0] + back[1][1] + back[1][2] == -6 ||
-                    back[2][0] + back[2][1] + back[2][2] == -6 ||
-                    back[0][0] + back[1][0] + back[2][0] == -6 ||
-                    back[0][1] + back[1][1] + back[2][1] == -6 ||
-                    back[0][2] + back[1][2] + back[2][2] == -6 ||
-                    back[0][0] + back[1][1] + back[2][2] == -6 ||
-                    back[0][2] + back[1][1] + back[2][0] == -6)
-            {
-                printf("%d'inci oyuncu kazandi!\n",(p-1)%2 +1);
-                break;
-            }
-        }
-        
-            for (int i = 0; i < 3; i++)
-        {
-            printf("| ");
-            for (int j = 0; j < 3; j++)
-            {
-                printf(" %c  | ", front[i][j]);
-            }
-            printf("\n-------------------\n");
-        }
-    }  
-    else if (g==1)
-    {
-        if(z==1)
-        {  
-            while (1)
-            {
-                move = 1;
-                if (p == 11)
-                {
-                    printf("\n\n\nOyun berabere bitti :(\n");
-                    break;
-                }
-                
-                
-                
-                for (int i = 0; i < 3; i++)
-                {
-                    printf("| ");
-                    for (int j = 0; j < 3; j++)
-                    {
-                        printf(" %c  | ", front[i][j]);
-                    }
-                    printf("\n-------------------\n");
-                }
-                
-                if (p%2+1 == 1)
-                {
-                    printf("Sira sende! ");
-                    scanf("%d", &sat);
-                    scanf("%d", &sut);
-                }
-                
-                if (p%2+1 == 1)
-                {
-                    if(back[sat-1][sut-1] == 0)
-                    {
-                    front[sat-1][sut-1] = 'O';
-                    back[sat-1][sut-1] = 2;
-                    p++;
-                    }
-                }
-                else if (p%2+1 == 2)
-                {
-
-                    while(move == 1){
-                        
-                        sat = rand() % (top - low + 1) + low;
-                        sut = rand() % (top - low + 1) + low;
-                        printf(" %d %d \n", sat , sut);
-                        if(back[sat-1][sut-1] == 0)
-                        {
-                        front[sat-1][sut-1] = 'X';
-                        back[sat-1][sut-1] = -2;
-                        p++;
-                        move = 0;
-                        }
-                    }    
-                }
-
-                if (back[0][0] + back[0][1] + back[0][2] == 6 ||
-                    back[1][0] + back[1][1] + back[1][2] == 6 ||
-                    back[2][0] + back[2][1] + back[2][2] == 6 ||
-                    back[0][0] + back[1][0] + back[2][0] == 6 ||
-                    back[0][1] + back[1][1] + back[2][1] == 6 ||
-                    back[0][2] + back[1][2] + back[2][2] == 6 ||
-                    back[0][0] + back[1][1] + back[2][2] == 6 ||
-                    back[0][2] + back[1][1] + back[2][0] == 6)
-                {
-                    printf("%d'inci oyuncu kazandi!\n",(p-1)%2 +1);
-                    break;
-                }
-                else if (back[0][0] + back[0][1] + back[0][2] == -6 ||
-                        back[1][0] + back[1][1] + back[1][2] == -6 ||
-                        back[2][0] + back[2][1] + back[2][2] == -6 ||
-                        back[0][0] + back[1][0] + back[2][0] == -6 ||
-                        back[0][1] + back[1][1] + back[2][1] == -6 ||
-                        back[0][2] + back[1][2] + back[2][2] == -6 ||
-                        back[0][0] + back[1][1] + back[2][2] == -6 ||
-                        back[0][2] + back[1][1] + back[2][0] == -6)
-                {
-                    printf("Kazanan bilgisayar!!!\n");
-                    break;
-                }
-            }
-        }
-        else if(z==2)
-        {
-            while (1)
-            {
-                printf("Under Construction...\n");
-                break;
-                
-                move = 1;
-                if (p == 11)
-                {
-                    printf("\n\n\nOyun berabere bitti :(\n");
-                    break;
-                }
-                                                
-                for (int i = 0; i < 3; i++)
-                {
-                    printf("| ");
-                    for (int j = 0; j < 3; j++)
-                    {
-                        printf(" %c  | ", front[i][j]);
-                    }
-                    printf("\n-------------------\n");
-                }
-                
-                if (p%2+1 == 1)
-                {
-                    printf("Sira sende! ");
-                    scanf("%d", &sat);
-                    scanf("%d", &sut);
-                }
-                
-                if (p%2+1 == 1)
-                {
-                    if(back[sat-1][sut-1] == 0)
-                    {
-                    front[sat-1][sut-1] = 'O';
-                    back[sat-1][sut-1] = 2;
-                    p++;
-                    }
-                }
-                else if (p%2+1 == 2)
-                {
-
-                    while(move == 1){
-                        
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }
-                        if ((back[0][0] + back[0][1] == 4) && back[0][2] == 0)
-                        {
-                            sat = 1;
-                            sut = 3;
-                        }                                                
-                        else
-                        {                       
-                            sat = rand() % (top - low + 1) + low;
-                            sut = rand() % (top - low + 1) + low;
-                        }
-
-                        if(back[sat-1][sut-1] == 0)
-                        {
-                            front[sat-1][sut-1] = 'X';
-                            back[sat-1][sut-1] = -2;
-                            p++;
-                            move = 0;
-                        }
-                    }    
-                }
-
-                if (back[0][0] + back[0][1] + back[0][2] == 6 ||
-                    back[1][0] + back[1][1] + back[1][2] == 6 ||
-                    back[2][0] + back[2][1] + back[2][2] == 6 ||
-                    back[0][0] + back[1][0] + back[2][0] == 6 ||
-                    back[0][1] + back[1][1] + back[2][1] == 6 ||
-                    back[0][2] + back[1][2] + back[2][2] == 6 ||
-                    back[0][0] + back[1][1] + back[2][2] == 6 ||
-                    back[0][2] + back[1][1] + back[2][0] == 6)
-                {
-                    printf("%d'inci oyuncu kazandi!\n",(p-1)%2 +1);
-                    break;
-                }
-                else if (back[0][0] + back[0][1] + back[0][2] == -6 ||
-                        back[1][0] + back[1][1] + back[1][2] == -6 ||
-                        back[2][0] + back[2][1] + back[2][2] == -6 ||
-                        back[0][0] + back[1][0] + back[2][0] == -6 ||
-                        back[0][1] + back[1][1] + back[2][1] == -6 ||
-                        back[0][2] + back[1][2] + back[2][2] == -6 ||
-                        back[0][0] + back[1][1] + back[2][2] == -6 ||
-                        back[0][2] + back[1][1] + back[2][0] == -6)
-                {
-                    printf("Kazanan bilgisayar!!!\n");
-                    break;
-                }
-            }
-        }
-        
-            for (int i = 0; i < 3; i++)
-        {
-            if (z == 2)
-            {
-                break;
-            }
-            
-            
-            printf("| ");
-            for (int j = 0; j < 3; j++)
-            {
-                printf(" %c  | ", front[i][j]);
-            }
-            printf("\n-------------------\n");
-        }
+        human(background,game_screen);
     }
+    else if (difficulty == 1)
+    {
+
+    }
+    else
+    {
+  
+    }        
+}
+
+void human(int background[][3], char game_screen[][3]){
+
+    static int turn = 2;
+    print_screen(background, game_screen);
+    if (check_result(background,turn) == 1)
+    {
+        return;
+    }
+    move(background, game_screen, turn);
+    turn++;
+    human(background, game_screen);
+}
+
+void print_screen(int background[][3], char game_screen[][3]){
      
-    
+    printf("\n\t   %c   |   %c   |  %c  \n", game_screen[0][0], game_screen[0][1], game_screen[0][2]);
+    printf("\t-----------------------\n");
+    printf("\t   %c   |   %c   |  %c  \n", game_screen[1][0], game_screen[1][1], game_screen[1][2]);
+    printf("\t-----------------------\n");
+    printf("\t   %c   |   %c   |  %c  \n", game_screen[2][0], game_screen[2][1], game_screen[2][2]);
+  
+    return;    
+}
 
+int check_result(int background[][3], int turn){
 
+    if (turn == 11)
+    {
+        printf("DRAW!");
+        return 1;
+    }
+    else if (row_cross(background) == 1)
+    {
+        printf("PLAYER %d WON!!", (turn-1)%2+1);
+        return 1;
+    }
+    else if (column_cross(background) == 1)
+    {
+        printf("PLAYER %d WON!!", (turn-1)%2+1);
+        return 1;
+    }
+    else if(diagonal_cross(background) == 1)
+    {
+        printf("PLAYER %d WON!!", (turn-1)%2+1);
+        return 1;
+    }    
+    else
+    {
+        return 0;
+    }
+}
 
+int row_cross(int background[][3]){
 
+    for (int i = 0; i < 3; i++)
+    {
+        if (background[i][0] == background[i][1] &&
+            background[i][1] == background[i][2] &&
+            background[i][0] != 0)
+        {
+            return 1;
+        }    
+    }
+    return 0;
+}
+
+int column_cross(int background[][3]){
+
+    for (int i = 0; i < 3; i++)
+    {
+        if (background[0][i] == background[1][i] &&
+            background[1][i] == background[2][i] &&
+            background[0][i] != 0)
+        {
+            return 1;
+        }    
+    }
+    return 0;
+}
+
+int diagonal_cross(int background[][3]){
+
+    if (background[0][0] == background[1][1] &&
+        background[1][1] == background[2][2] && 
+        background[0][0] != 0)
+    {
+        return 1;
+    }         
+    if (background[0][2] == background[1][1] &&
+        background[1][1] == background[2][0] &&
+        background[0][2] != 0)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+void move(int background[][3], char game_screen[][3], int turn){
+
+    int  row=0, column=0;
+    do
+    {
+        printf("The %dth players move:",turn%2+1);
+        scanf("%d %d", &row, &column);
+        row -= 1;
+        column -= 1;
+        if (background[row][column] == 0)
+        {
+            background[row][column] = turn%2+1 == 1? 1 : -1;
+            game_screen[row][column] = turn%2+1 == 1? '0' : 'X';
+            return;
+        }
+        print_screen(background, game_screen);
+        printf("That spot is taken!\n");
+    } while (1);
 }
